@@ -1,10 +1,11 @@
 const http = require('http');
 const router = require('./router')
 const { homePage, aboutPage, defaultPage } = require('./controllers/homeContoller');
-const { catalogPage } = require('./controllers/catalogContoller');
+const { catalogPage, createPage } = require('./controllers/catalogContoller');
 
 router.register('/', homePage);
 router.register('/catalog', catalogPage);
+router.register('/create', createPage);
 router.register('/about', aboutPage);
 router.register('default', defaultPage);
 
