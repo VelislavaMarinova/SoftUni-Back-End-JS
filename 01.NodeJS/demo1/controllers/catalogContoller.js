@@ -33,16 +33,17 @@ function createItem(req, res) {
     const form =new IncomingForm();
     form.parse(req, (err, fields) => {
         const item={
-            id: ('asdf0000'+(Math.random()*9999 | 0)).slice(0,8),
+            id: 'asdf'+('0000'+(Math.random()*9999 | 0)).slice(-4),
             name: fields.name,
             color: fields.color
         };
 
         data.push(item);
+        //redirect
+        res.writeHead(301,['Location','/catalog'])
+        res.end();
     });
     
-    console.log('create request');
-    res.end();
 }
 module.exports = {
     catalogPage,
