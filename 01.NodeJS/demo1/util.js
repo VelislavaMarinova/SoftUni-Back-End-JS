@@ -25,6 +25,19 @@ function html(body,title="Demo site") {
 </html>`;
 }
 
+const data =[
+    {
+        id:'asdf001',
+        name: 'Product 1',
+        color: 'Red'
+    },
+    {
+        id:'asdf002',
+        name: 'Product 2',
+        color: 'Green'
+    },
+]
 module.exports={
-    html
+    html,
+    data,
 };
