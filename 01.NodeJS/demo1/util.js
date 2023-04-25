@@ -1,4 +1,4 @@
-function html(body,title="Demo site") {
+function html(body, title = "Demo site") {
     return `
     <!DOCTYPE html>
 <html lang="en">
@@ -17,6 +17,9 @@ function html(body,title="Demo site") {
             <li>
                  <a href="/catalog">Catalog</a>
             </li>
+            <li>
+                <a href="/create">Create</a>
+            </li>
         </ul>
     </nav>
     ${body}
@@ -25,19 +28,19 @@ function html(body,title="Demo site") {
 </html>`;
 }
 
-const data =[
+const data = [
     {
-        id:'asdf001',
+        id: 'asdf001',
         name: 'Product 1',
         color: 'Red'
     },
     {
-        id:'asdf002',
+        id: 'asdf002',
         name: 'Product 2',
         color: 'Green'
     },
 ]
-module.exports={
+module.exports = {
     html,
     data,
 };
