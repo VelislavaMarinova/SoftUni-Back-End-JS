@@ -23,7 +23,8 @@ const server = http.createServer(async (req, res) => {
     } else if (/cats\/\d+\/edit/.test(req.url)) {
         let catId = req.url.split('/')[2];
         let cat = cats.find(x => x.id == catId);
-        // res.write(infoCat(cat));
+        let editCatHtml = readFile(path.resolve(__dirname, './views/home.html'),)
+          res.write(infoCat(cat));
     }
     else if (req.url == '/css/site.css') {
 
