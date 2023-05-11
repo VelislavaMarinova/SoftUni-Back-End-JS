@@ -9,6 +9,9 @@ console.log('File written!');
 
 //non-blocking and asynchronous code
 fs.readFile('./start.txt', 'utf-8', (err, data1) => {
+    if(err){
+        return console.log('ERROR');
+    }
     fs.readFile(`./${data1}.txt`, 'utf-8', (err, data2) => {
         fs.readFile(`./append.txt`, 'utf-8', (err, data3) => {
             console.log(data3);
