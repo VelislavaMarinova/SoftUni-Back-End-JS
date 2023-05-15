@@ -8,6 +8,9 @@ const catSchema = new mongoose.Schema({
     age: Number
 });
 
+catSchema.methods.makeSound=function(){
+console.log(`My name is ${this.name} ,and I can Meow!`);
+}
 const Cat = mongoose.model('Cat', catSchema);
 
 async function main() {
@@ -15,8 +18,9 @@ async function main() {
     console.log('db connected');
 
 
-    // await readCats();
-    await saveCat('Roni', 'Siam', 'agressive cat', '12')
+   const cats = await readCats();
+   cats.forEach(cat=>cat.makeSound())
+    // await saveCat('Roni', 'Siam', 'agressive cat', '12')
 };
 
 async function saveCat(name, breed, description, age) {
@@ -41,6 +45,7 @@ async function saveCat(name, breed, description, age) {
 async function readCats() {
     const cats = await Cat.find()
     console.log(cats);
+    return cats;
 };
 
 main();
