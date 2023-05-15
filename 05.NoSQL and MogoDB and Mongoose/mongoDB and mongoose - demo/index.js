@@ -16,26 +16,31 @@ async function main() {
 
 
     // await readCats();
-    await saveCat('Bobi','tricolor','calm cat', '4')
+    await saveCat('Roni', 'Siam', 'agressive cat', '12')
 };
 
 async function saveCat(name, breed, description, age) {
-    //create a new instance
-    const cat = new Cat({
+
+    await Cat.create({
         age,
         breed,
         description,
-        name,
-    });
-    //save is a method  of the instnce
-    await cat.save()
+        name
+    })
+    // //create a new instance
+    // const cat = new Cat({
+    //     age,
+    //     breed,
+    //     description,
+    //     name,
+    // });
+    // //save is a method  of the instnce
+    // await cat.save()
 };
 
 async function readCats() {
     const cats = await Cat.find()
     console.log(cats);
 };
-
-
 
 main();
