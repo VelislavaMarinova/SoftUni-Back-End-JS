@@ -2,7 +2,15 @@
   "users": [
     {
       "username": "Ivan",
-      "password": "$2b$10$Vk5S/Uji5XeVhTLj.eC4OOgehdtTLxaaA2mP5SW5WzMipWAs62N0q"
+      "password": "$2b$10$k9AdTcz6DPGDCzdnLOFWoef1Xgod6wtf2Eb0dXWf7aD2v.wpTuv9C"
+    },
+    {
+      "username": "Annabell",
+      "password": "$2b$10$l15AYk7VWNVBSDXBzcahf.zPqpqi9ChzDVPpotaDrlNlsCKGaGi3a"
+    },
+    {
+      "username": "Zaro",
+      "password": "$2b$10$hgBX9dKd0sJDzSf1064TEuCa6jR0lxfdtydGwUvVY4LrJNbqfzwoa"
     }
   ]
 }

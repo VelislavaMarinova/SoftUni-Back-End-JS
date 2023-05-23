@@ -2,7 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const db = require('./db.json');//require parse js file in js object
-const {registerUser}=require('./dataService')
+const { registerUser, loginUser } = require('./dataService')
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
@@ -40,19 +40,23 @@ app.get('/', (req, res) => {
 `    )
 });
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
     const { username, password } = req.body;
-    if (username === 'Ivan' && password === 'ivan') {
+    try {
+        const user = await loginUser(username, password)
+
         const authData = {
-            username: "Ivan",
+            username: user.username,
         }
         res.cookie('auth', JSON.stringify(authData));
-        req.session.username = 'Ivan'
-        req.session.privateInfo = 'some info'
-        return res.redirect('/');
-    }
+        req.session.username = user.username;
+        req.session.privateInfo = user.password;
+        return res.redirect('/profile');
+    } catch (error) {
+        console.log(error);
+        res.status(401).end();
+    };
 
-    res.status(401).end();
 });
 
 app.get('/register', (req, res) => {
@@ -68,10 +72,10 @@ app.get('/register', (req, res) => {
     `)
 });
 
-app.post('/register',async (req, res) => {
+app.post('/register', async (req, res) => {
     const { username, password } = req.body;
-   await registerUser(username,password);
-   res.redirect('/login');
+    await registerUser(username, password);
+    res.redirect('/login');
 });
 
 app.get('/profile', (req, res) => {
@@ -82,7 +86,7 @@ app.get('/profile', (req, res) => {
     }
     const { username } = JSON.parse(authData);
 
-    console.log(req.session);
+    // console.log(req.session);
 
     res.send(`<h2>Hello-${username}</h2>`);
 
