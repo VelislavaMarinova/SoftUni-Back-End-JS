@@ -2,15 +2,24 @@ const mongoose = require('mongoose');
 
 
 const catSchema = new mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        required: [true, "Require name"],
+        minLength:[5, "Min length 5 digits"]
+    },
     breed: String,
     description: String,
-    age: Number
+    age: {type:Number}
 });
 
-catSchema.methods.makeSound=function(){
-console.log(`My name is ${this.name} ,and I can Meow!`);
-}
+catSchema.methods.makeSound = function () {
+    console.log(`My name is ${this.name} ,and I can Meow!`);
+};
+
+//custom validator
+catSchema.path('name').validate(function(){
+    return this.name.startsWith('N')
+}, 'Name should start with N')
 const Cat = mongoose.model('Cat', catSchema);
 
 async function main() {
@@ -18,9 +27,9 @@ async function main() {
     console.log('db connected');
 
 
-   const cats = await readCats();
-   cats.forEach(cat=>cat.makeSound())
-    // await saveCat('Roni', 'Siam', 'agressive cat', '12')
+    const cats = await readCats();
+    cats.forEach(cat => cat.makeSound())
+     await saveCat('ronisds', 'Siam', 'agressive cat', '12')
 };
 
 async function saveCat(name, breed, description, age) {
