@@ -1,11 +1,14 @@
 const fs = require('fs/promises');
-const db = require('./db.json');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const db = require('./db.json');
+const secret = "secret";
 
 async function saveDb() {
     console.log(db);
     const data = JSON.stringify(db, null, 2)
-    console.log(data);
+    // console.log(data);
     await fs.writeFile('./db.json', data);
 };
 
@@ -32,15 +35,18 @@ exports.loginUser = async (username, password) => {
 
     if (!user) {
         throw 'Wrong user or password';
-    }
+    };
 
     isAutenticated = await bcrypt.compare(password, user.password);
 
-    if(!isAutenticated){
+    if (!isAutenticated) {
         throw 'Wrong user or password';
+    };
 
-    }
-
+    const payload = { username: user.username };
+    const optins = { expiresIn: '1h' }
+    const token = jwt.sign(payload, secret, optins);//generate synchronously token
+    console.log(token);
     return user;
 
 };
