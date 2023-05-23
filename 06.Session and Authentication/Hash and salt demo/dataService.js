@@ -7,13 +7,14 @@ async function saveDb() {
     const data = JSON.stringify(db, null, 2)
     console.log(data);
     await fs.writeFile('./db.json', data);
-}
+};
 
 exports.registerUser = async (username, password) => {
     console.log(db.users);
     if (db.users.some(x => x.username === username)) {
         throw 'User alredy exists!';
-    }
+    };
+
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
@@ -26,7 +27,7 @@ exports.registerUser = async (username, password) => {
 };
 
 exports.loginUser = async (username, password) => {
-    
+
     const user = db.users.find(x => x.username === username);
 
     if (!user) {

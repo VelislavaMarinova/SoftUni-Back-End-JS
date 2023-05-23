@@ -34,6 +34,8 @@ app.get('/', (req, res) => {
             <li><a href="/login">Login</a></li>
             <li><a href="/profile">Profile</a></li>
             <li><a href="/register">Register</a></li>
+            <li><a href="/logout">Logout</a></li>
+
 
          </ul>
 
@@ -90,6 +92,11 @@ app.get('/profile', (req, res) => {
 
     res.send(`<h2>Hello-${username}</h2>`);
 
+});
+
+app.get('/logout',(req,res)=>{
+    res.clearCookie('auth');
+    res.redirect('/');
 });
 
 app.listen(5000, () => console.log("server 5000"));
