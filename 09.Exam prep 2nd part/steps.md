@@ -71,10 +71,15 @@ NB: remove all "." in the paths for css ex: src="/static/images/logo.png"
                     router.post('/create', isAutorized, (req, res) => {
 
                     });
+    * try/catch arequest
 6. Create sthService in services
     * create
     * get ownerId: req.user._id
     * pass ownerId in data for create 
     * create works? MongoDB compass
 7. Add Catalog page
+    * in sthController add get-method: router.get(...)
+    * in sthService: getAll
+    * getAll data in sthController and pass it in catalog page 
+    * try/catch
 
