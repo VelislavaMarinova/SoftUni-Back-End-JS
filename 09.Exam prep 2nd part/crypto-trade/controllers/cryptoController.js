@@ -10,14 +10,23 @@ router.get('/catalog', async (req, res) => {
 
     try {
         const allCryptoOffers = await cryptoService.getAll().lean();
-        res.render('crypto/catalog', {  allCryptoOffers:[]});
-        
+        res.render('crypto/catalog', { allCryptoOffers });
+
     } catch (error) {
 
         return res.status(400).render('crypto/catalog', { error: getErrorMessaage(error) });
-        
+
     }
-})
+});
+
+router.get('/:cryptoOfferId/details', async (req, res) => {
+
+    const cryptoOfferId = req.params.cryptoOfferId
+    // console.log(cryptoOfferId);
+    const oneCryptoOffer = await cryptoService.getOne(cryptoOfferId).lean();
+    // console.log(oneCryptoOffer);
+    res.render('crypto/details', { oneCryptoOffer })
+});
 
 router.get('/create', isAutorized, (req, res) => {//isAutorized routeguard
     res.render('crypto/create');

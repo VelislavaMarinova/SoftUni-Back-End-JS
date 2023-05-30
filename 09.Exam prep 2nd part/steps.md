@@ -82,4 +82,9 @@ NB: remove all "." in the paths for css ex: src="/static/images/logo.png"
     * in sthService: getAll
     * getAll data in sthController and pass it in catalog page 
     * try/catch
+    * No items logic
+8. Add details page
+    * in sthController add get-method: router.get(...)
+    * in sthService: getOne
+    * getOne data in sthController and pass it in catalog page
 
