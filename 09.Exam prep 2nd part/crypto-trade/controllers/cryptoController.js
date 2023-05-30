@@ -7,10 +7,10 @@ const { getErrorMessaage } = require('../utils/errorUtils');
 
 
 router.get('/catalog', async (req, res) => {
-    
+
     try {
         const allCryptoOffers = await cryptoService.getAll().lean();
-        res.render('crypto/catalog', { allCryptoOffers });
+        res.render('crypto/catalog', {  allCryptoOffers:[]});
         
     } catch (error) {
 
