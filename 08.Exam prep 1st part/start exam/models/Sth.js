@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const cryptoSchema = new mongoose.Schema({
+const SthSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -30,4 +30,8 @@ const cryptoSchema = new mongoose.Schema({
         ref: 'User',
     }
 
-})
+});
+
+const Sth = mongoose.model('CryptoOffer', SthSchema);
+
+module.exports = Sth;
