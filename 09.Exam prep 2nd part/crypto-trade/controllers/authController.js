@@ -19,6 +19,7 @@ router.post('/register', async (req, res) => {
 
         // if we hawe login automativcally after register
         const token = await authService.register(username, email, password, repeatPassword);
+        //todo login automatically
         res.cookie('auth', token);
         res.redirect('/');
 
@@ -27,10 +28,6 @@ router.post('/register', async (req, res) => {
         return res.status(400).render('auth/register', { error: getErrorMessaage(error) });
 
     }
-
-    //todo login automatically
-    res.redirect('/')
-
 });
 
 router.get('/login', (req, res) => {

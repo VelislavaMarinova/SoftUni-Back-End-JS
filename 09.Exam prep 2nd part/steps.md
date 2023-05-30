@@ -87,4 +87,7 @@ NB: remove all "." in the paths for css ex: src="/static/images/logo.png"
     * in sthController add get-method: router.get(...)
     * in sthService: getOne
     * getOne data in sthController and pass it in catalog page
+9.  Add logic about details page(not logged user/logged in user/owner/)
+10. Buy crypro !!!
+11. Add logic for buy button
 

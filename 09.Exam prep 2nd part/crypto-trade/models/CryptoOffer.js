@@ -28,7 +28,11 @@ const cryptoOfferSchema = new mongoose.Schema({
     ownerId: {//many crypto for one user / many to 1
         type: mongoose.Types.ObjectId,
         ref: 'User',
-    }
+    },
+    buyers:[{
+        type: mongoose.Types.ObjectId,
+        ref: 'User'
+    }],
 
 });
 
