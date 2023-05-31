@@ -66,7 +66,7 @@ router.get('/:cryptoOfferId/edit', isAutorized, async (req, res) => {
     try {
         const cryptoOfferData = await cryptoService.getOne(cryptoOfferId).lean();
         if (userId != cryptoOfferData.ownerId) {
-            throw new Error('Forbiden page!');
+            throw new Error('Forbidden page!');
         }
         const paymentMethods = selectPaymentMethods(cryptoOfferData.paymentMethod);
         res.render('crypto/edit', { cryptoOfferData, paymentMethods });
@@ -101,12 +101,25 @@ router.post('/:cryptoOfferId/edit', isAutorized, async (req, res) => {
 
 
 router.get('/:cryptoOfferId/delete', isAutorized, async (req, res) => {
-    const cryptoOfferId = req.params.cryptoOfferId
+    const cryptoOfferId = req.params.cryptoOfferId;
+    const userId = req.user._id;
 
 
     //don`t have confirm page for deleting cryptoOffer
     // res.render('crypto/delete')
-    await cryptoService.delete(cryptoOfferId)
+    try {
+
+        const cryptoOfferData = await cryptoService.getOne(cryptoOfferId);
+        if(cryptoOfferData.ownerId != userId){
+            throw new Error('Forbidden page!');
+        }
+        await cryptoService.delete(cryptoOfferId);
+        
+    } catch (error) {
+        
+        return res.status(400).render('home', { error: getErrorMessaage(error) });
+
+    }
     //todo delete cryptoOffer
     res.redirect('/crypto/catalog')
 });

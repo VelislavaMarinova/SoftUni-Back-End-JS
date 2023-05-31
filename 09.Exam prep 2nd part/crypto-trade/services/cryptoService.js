@@ -14,7 +14,7 @@ exports.buy = async (userId, cryptoOfferId, res) => {
     //chek if owner tries to buy-forbidden page
     if (isOwner) {
 
-        throw new Error("Forbiden page!");
+        throw new Error("Forbidden page!");
     }
     //todo check if user has alredy bought cryptoOffer;
     cryptoOffer.buyers.push(userId)
@@ -28,7 +28,7 @@ exports.edit = async (cryptoOfferId, cryptoOfferData, userId) => {
     const cryptoOffer = await CryptoOffer.findById(cryptoOfferId);
     const isOwner = cryptoOffer.ownerId == userId;
     if (!isOwner) {
-        throw new Error("Forbiden page!");
+        throw new Error("Forbidden page!");
     }
 
     await CryptoOffer.findByIdAndUpdate(cryptoOfferId, cryptoOfferData);
