@@ -1,19 +1,22 @@
-const CryptoOffer = require('../models/CryptoOffer')
+const CryptoOffer = require('../models/CryptoOffer');
+const { login } = require('./authService');
 
 exports.getAll = () => CryptoOffer.find({});
 
 exports.getOne = (cryptoOfferId) => CryptoOffer.findById(cryptoOfferId);
 
 exports.buy = async (userId, cryptoOfferId, res) => {
+
     // CryptoOffer.findByIdAndUpdate(cryptoOfferId, {$push: {buyers: userId}});
     const cryptoOffer = await CryptoOffer.findById(cryptoOfferId);
-    const isOwner = cryptoOffer.ownerId == userId
-    console.log(isOwner);
-    //todo check if user has alredy bought cryptoOffer;
+    const isOwner = cryptoOffer.ownerId == userId;
+
+    //chek if owner tries to buy-forbidden page
     if (isOwner) {
-        console.log('OWNER');
-        throw new Error("Forbiden page!")
+
+        throw new Error("Forbiden page!");
     }
+    //todo check if user has alredy bought cryptoOffer;
     cryptoOffer.buyers.push(userId)
     return cryptoOffer.save();
 
@@ -21,6 +24,14 @@ exports.buy = async (userId, cryptoOfferId, res) => {
 
 exports.create = (ownerId, cryptoOfferData) => CryptoOffer.create({ ...cryptoOfferData, ownerId: ownerId });
 
-exports.edit = (cryptoOfferId, cryptoOfferData) => CryptoOffer.findByIdAndUpdate(cryptoOfferId, cryptoOfferData);
+exports.edit = async (cryptoOfferId, cryptoOfferData, userId) => {
+    const cryptoOffer = await CryptoOffer.findById(cryptoOfferId);
+    const isOwner = cryptoOffer.ownerId == userId;
+    if (!isOwner) {
+        throw new Error("Forbiden page!");
+    }
+
+    await CryptoOffer.findByIdAndUpdate(cryptoOfferId, cryptoOfferData);
+};
 
 exports.delete = (cryptoOfferId) => CryptoOffer.findByIdAndDelete(cryptoOfferId);
