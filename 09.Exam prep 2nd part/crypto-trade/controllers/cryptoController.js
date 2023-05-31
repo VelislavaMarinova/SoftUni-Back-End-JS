@@ -29,7 +29,6 @@ router.get('/:cryptoOfferId/details', async (req, res) => {
     let userId = '';
     if (req.user) {
         userId = req.user._id;
-        // console.log(userId);
     }
     // console.log(oneCryptoOffer.ownerId);
     //!!!oneCryptoOffer.ownerId = new ObjectId("647496c025714f6d9223b931")so don't use ===
@@ -45,7 +44,13 @@ router.get('/:cryptoOfferId/details', async (req, res) => {
 router.get('/:cryptoOfferId/buy', isAutorized, async (req, res) => {
     const userId = req.user._id;
     const cryptoOfferId = req.params.cryptoOfferId
-    await cryptoService.buy(userId, cryptoOfferId);
+    try {
+
+        await cryptoService.buy(userId, cryptoOfferId, res);
+
+    } catch (error) {
+        return res.status(400).render('home', { error: getErrorMessaage(error) });
+    }
 
     res.redirect(`/crypto/${req.params.cryptoOfferId}/details`);
 })
@@ -68,7 +73,7 @@ router.post('/:cryptoOfferId/edit', isAutorized, async (req, res) => {
     const cryptoOfferData = req.body
     const id = req.params.cryptoOfferId
     //todo edit
-     await cryptoService.edit(id, cryptoOfferData);
+    await cryptoService.edit(id, cryptoOfferData);
 
     //check if owner?
 
