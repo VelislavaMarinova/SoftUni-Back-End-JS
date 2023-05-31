@@ -55,10 +55,8 @@ router.get('/create', isAutorized, async (req, res) => {//isAutorized routeguard
 });
 
 router.get('/:cryptoOfferId/edit', isAutorized, async (req, res) => {
-    const cryptoOfferId = req.params.cryptoOfferId;
-    console.log(cryptoOfferId, 'cryptoOfferId');
-    const cryptoOfferData = await cryptoService.getOne(cryptoOfferId).lean();
-    console.log(cryptoOfferData, "cryptoOfferData");
+    const id = req.params.cryptoOfferId;
+    const cryptoOfferData = await cryptoService.getOne(id).lean();
     const paymentMethods = selectPaymentMethods(cryptoOfferData.paymentMethod);
     console.log(paymentMethods);
     //   Object.keys(paymentMethods).map(key=>({key, label: paymentMethods[key]}))
@@ -68,21 +66,23 @@ router.get('/:cryptoOfferId/edit', isAutorized, async (req, res) => {
 
 router.post('/:cryptoOfferId/edit', isAutorized, async (req, res) => {
     const cryptoOfferData = req.body
-    const cryptoOfferId = req.params.cryptoOfferId
+    const id = req.params.cryptoOfferId
     //todo edit
-    const cryptoOffer = await cryptoService.edit(cryptoOfferId, cryptoOfferData);
+     await cryptoService.edit(id, cryptoOfferData);
 
     //check if owner?
 
-    res.redirect(`/crypto/${cryptoOfferId}/details`);
+    res.redirect(`/crypto/${id}/details`);
 });
 
 
-router.get('/:cryptoOfferId/delete', isAutorized, (req, res) => {
+router.get('/:cryptoOfferId/delete', isAutorized, async (req, res) => {
+    const id = req.params.cryptoOfferId
+
 
     //don`t have confirm page for deleting cryptoOffer
     // res.render('crypto/delete')
-
+    await cryptoService.delete(id)
     //todo delete cryptoOffer
     res.redirect('/crypto/catalog')
 });
