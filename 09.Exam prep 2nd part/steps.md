@@ -90,4 +90,13 @@ NB: remove all "." in the paths for css ex: src="/static/images/logo.png"
 9.  Add logic about details page(not logged user/logged in user/owner/)
 10. Buy crypro !!!
 11. Add logic for buy button
+12. Edit page get
+    * get-method for edit form :
+    * get data
+    * fill inputfields value="" with data
+13. Edit page post
+    * post editet data
+14. Delete page
+
+
 
