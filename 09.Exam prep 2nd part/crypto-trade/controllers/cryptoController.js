@@ -1,9 +1,9 @@
 const router = require('express').Router();
 
-const { } = require('handlebars');
 const { isAutorized } = require('../middlewares/authMW');
 const cryptoService = require('../services/cryptoService');
 const { getErrorMessaage } = require('../utils/errorUtils');
+const { selectPaymentMethods } = require('../utils/cryptoUtils')
 
 
 router.get('/catalog', async (req, res) => {
@@ -35,33 +35,67 @@ router.get('/:cryptoOfferId/details', async (req, res) => {
     //!!!oneCryptoOffer.ownerId = new ObjectId("647496c025714f6d9223b931")so don't use ===
     const isOwner = userId == oneCryptoOffer.ownerId;
     // console.log(isOwner);
-    const isBuyer = oneCryptoOffer.buyers.includes(userId)
+    const isBuyer = oneCryptoOffer.buyers.some(id => id == userId);//returns true/false - boolean
+
     //const isOwner = req.user?._id === oneCryptoOffer.ownerId
     // console.log(oneCryptoOffer);
-    res.render('crypto/details', { oneCryptoOffer, isOwner })
+    res.render('crypto/details', { oneCryptoOffer, isOwner, isBuyer })
 });
 
-router.get('/:cryptoOfferId/buy',isAutorized, async(req,res)=>{
+router.get('/:cryptoOfferId/buy', isAutorized, async (req, res) => {
     const userId = req.user._id;
     const cryptoOfferId = req.params.cryptoOfferId
-     await cryptoService.buy(userId,cryptoOfferId);
+    await cryptoService.buy(userId, cryptoOfferId);
 
-     res.redirect(`/crypto/${req.params.cryptoOfferId}/details`);
+    res.redirect(`/crypto/${req.params.cryptoOfferId}/details`);
 })
 
-router.get('/create', isAutorized, (req, res) => {//isAutorized routeguard
+router.get('/create', isAutorized, async (req, res) => {//isAutorized routeguard
     res.render('crypto/create');
+});
+
+router.get('/:cryptoOfferId/edit', isAutorized, async (req, res) => {
+    const cryptoOfferId = req.params.cryptoOfferId;
+    console.log(cryptoOfferId, 'cryptoOfferId');
+    const cryptoOfferData = await cryptoService.getOne(cryptoOfferId).lean();
+    console.log(cryptoOfferData, "cryptoOfferData");
+    const paymentMethods = selectPaymentMethods(cryptoOfferData.paymentMethod);
+    console.log(paymentMethods);
+    //   Object.keys(paymentMethods).map(key=>({key, label: paymentMethods[key]}))
+
+    res.render('crypto/edit', { cryptoOfferData, paymentMethods });
+});
+
+router.post('/:cryptoOfferId/edit', isAutorized, async (req, res) => {
+    const cryptoOfferData = req.body
+    const cryptoOfferId = req.params.cryptoOfferId
+    //todo edit
+    const cryptoOffer = await cryptoService.edit(cryptoOfferId, cryptoOfferData);
+
+    //check if owner?
+
+    res.redirect(`/crypto/${cryptoOfferId}/details`);
+});
+
+
+router.get('/:cryptoOfferId/delete', isAutorized, (req, res) => {
+
+    //don`t have confirm page for deleting cryptoOffer
+    // res.render('crypto/delete')
+
+    //todo delete cryptoOffer
+    res.redirect('/crypto/catalog')
 });
 
 router.post('/create', isAutorized, async (req, res) => {//isAutorized routeguard
 
-    const cryptoData = req.body;
+    const cryptoOfferData = req.body;
     const ownerId = req.user._id;
     console.log(ownerId);
 
     try {
 
-        await cryptoService.create(ownerId, cryptoData);
+        await cryptoService.create(ownerId, cryptoOfferData);
 
     } catch (error) {
         return res.status(400).render('crypto/create', { error: getErrorMessaage(error) });
