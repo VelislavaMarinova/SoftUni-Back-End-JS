@@ -3,8 +3,12 @@ const router = require('express').Router();
 const { isAutorized } = require('../middlewares/authMW');
 const cryptoService = require('../services/cryptoService');
 const { getErrorMessaage } = require('../utils/errorUtils');
-const { selectPaymentMethods } = require('../utils/cryptoUtils')
+const { selectPaymentMethods } = require('../utils/cryptoUtils');
 
+
+router.get('/search', async (req, res) => {
+    res.render('crypto/search');
+});
 
 router.get('/catalog', async (req, res) => {
 
@@ -110,13 +114,13 @@ router.get('/:cryptoOfferId/delete', isAutorized, async (req, res) => {
     try {
 
         const cryptoOfferData = await cryptoService.getOne(cryptoOfferId);
-        if(cryptoOfferData.ownerId != userId){
+        if (cryptoOfferData.ownerId != userId) {
             throw new Error('Forbidden page!');
         }
         await cryptoService.delete(cryptoOfferId);
-        
+
     } catch (error) {
-        
+
         return res.status(400).render('home', { error: getErrorMessaage(error) });
 
     }

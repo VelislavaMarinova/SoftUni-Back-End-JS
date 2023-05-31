@@ -31,7 +31,7 @@ exports.edit = async (cryptoOfferId, cryptoOfferData, userId) => {
         throw new Error("Forbidden page!");
     }
 
-    await CryptoOffer.findByIdAndUpdate(cryptoOfferId, cryptoOfferData);
+    await CryptoOffer.findByIdAndUpdate(cryptoOfferId, cryptoOfferData, {runValidators: true});
 };
 
 exports.delete = (cryptoOfferId) => CryptoOffer.findByIdAndDelete(cryptoOfferId);
