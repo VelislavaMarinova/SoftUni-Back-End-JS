@@ -36,18 +36,27 @@ router.post('/create', isAutorized, async (req, res) => {//isAutorized routeguar
     res.redirect('/book/catalog');
 });
 
-// router.get('/catalog', async (req, res) => {
+router.get('/:bookReviewId/details', async (req, res) => {
 
-//     try {
-//         const allCryptoOffers = await cryptoService.getAll().lean();
-//         res.render('crypto/catalog', { allCryptoOffers });
+    const bookReviewId = req.params.bookReviewId
+    // console.log(cryptoOfferId);
+    const selectedBookReview = await bookService.getOne(bookReviewId).lean();
 
-//     } catch (error) {
+    //if user is not logged in req.user._id ===undefined !!!
+    let userId = '';
+    if (req.user) {
+        userId = req.user._id;
+    }
+    // console.log(oneCryptoOffer.ownerId);
+    //!!!oneCryptoOffer.ownerId = new ObjectId("647496c025714f6d9223b931")so don't use ===
+    const isOwner = userId == selectedBookReview.ownerId;
+    // console.log(isOwner);
+    //const isBuyer = oneCryptoOffer.buyers.some(id => id == userId);//returns true/false - boolean
 
-//         return res.status(400).render('crypto/catalog', { error: getErrorMessaage(error) });
-
-//     }
-// });
+    //const isOwner = req.user?._id === oneCryptoOffer.ownerId
+    // console.log(oneCryptoOffer);
+    res.render('book/details', { selectedBookReview, isOwner })
+});
 
 
 module.exports = router;
