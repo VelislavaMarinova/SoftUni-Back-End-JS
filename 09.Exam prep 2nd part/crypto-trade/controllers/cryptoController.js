@@ -7,7 +7,17 @@ const { selectPaymentMethods } = require('../utils/cryptoUtils');
 
 
 router.get('/search', async (req, res) => {
-    res.render('crypto/search');
+    const { name, paymentMethod } = req.query;
+    try {
+        const allCryptoOffers = await cryptoService.search(name, paymentMethod);
+        res.render('crypto/search', { allCryptoOffers });
+
+    } catch (error) {
+
+        return res.status(400).render('crypto/search', { error: getErrorMessaage(error) });
+
+    }
+
 });
 
 router.get('/catalog', async (req, res) => {

@@ -3,6 +3,20 @@ const { login } = require('./authService');
 
 exports.getAll = () => CryptoOffer.find({});
 
+exports.search = async (name, paymentMethod) => {
+    let allCryptoOffersIfSearch =  await this.getAll().lean();
+//memory filtration
+    if (name) {
+        allCryptoOffersIfSearch = allCryptoOffersIfSearch.filter(x => x.name.toLowerCase() == name.toLowerCase())
+    }
+    if (paymentMethod) {
+        allCryptoOffersIfSearch =  allCryptoOffersIfSearch.filter(x => x.paymentMethod == paymentMethod)
+    }
+
+
+    return allCryptoOffersIfSearch;
+}
+
 exports.getOne = (cryptoOfferId) => CryptoOffer.findById(cryptoOfferId);
 
 exports.buy = async (userId, cryptoOfferId, res) => {
@@ -31,7 +45,7 @@ exports.edit = async (cryptoOfferId, cryptoOfferData, userId) => {
         throw new Error("Forbidden page!");
     }
 
-    await CryptoOffer.findByIdAndUpdate(cryptoOfferId, cryptoOfferData, {runValidators: true});
+    await CryptoOffer.findByIdAndUpdate(cryptoOfferId, cryptoOfferData, { runValidators: true });
 };
 
 exports.delete = (cryptoOfferId) => CryptoOffer.findByIdAndDelete(cryptoOfferId);
