@@ -9,23 +9,21 @@ const BookSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    image: {
-        type: Number,
-        required: true,
-    },
-   bookReview: {
-        type: String,
-        required: true,
-    },
     genre: {
         type: String,
         required: true,
     },
     stars: {
+        type: Number,
+        required: true,
+    },
+    image: {
         type: String,
         required: true,
-        minLength: 1,
-        maxLength: 5,
+    },
+   bookReview: {
+        type: String,
+        required: true,
     },
     // paymentMethod: {
     //     type: String,
@@ -47,6 +45,6 @@ const BookSchema = new mongoose.Schema({
 
 });
 
-const Book = mongoose.model('CryptoOffer', BookSchema);
+const Book = mongoose.model('bookReview', BookSchema);
 
 module.exports = Book;
