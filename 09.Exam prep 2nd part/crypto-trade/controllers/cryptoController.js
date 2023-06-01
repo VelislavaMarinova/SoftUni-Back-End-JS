@@ -7,7 +7,7 @@ const { selectPaymentMethods } = require('../utils/cryptoUtils');
 
 
 router.get('/search', async (req, res) => {
-    const { name, paymentMethod } = req.query
+    const { name, paymentMethod } = req.query;
     try {
         const allCryptoOffers = await cryptoService.search(name, paymentMethod);
         res.render('crypto/search', { allCryptoOffers });

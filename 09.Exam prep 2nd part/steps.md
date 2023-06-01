@@ -52,7 +52,11 @@ NB: remove all "." in the paths for css ex: src="/static/images/logo.png"
 
 1. Add all resources as html and transform them to hbs.
     * replace main.hbs
+    * add  {{{body}}} in main
     * replace home.hbs
+    * index.js :change data base name
+    * static files to start from puplic file
+    * navigation: /,/login,/register
 2. Check task and mark all points that are done.
 3. Create model //added in the template
 4. Add cerate page
