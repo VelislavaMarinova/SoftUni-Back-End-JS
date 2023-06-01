@@ -12,27 +12,20 @@
             </select>
             <button type="submit" class="btn-search">Search</button>
         </form>
-
+        {{#if allCryptoOffers}}
         <div class="search-result">
             <div class="search-list">
-                <div class="coin">
-                    <div class="coin-img">
-                        <img src="./static/images/ethereum.png">
-                    </div>
-                    <div class="coin-info">
-                        <h1>Ethereum</h1>
-                        <p><span>Price: </span>$2,338.55</p>
-                        <p><span>Payment: </span>debit-card</p>
-                    </div>
-
-                    <a href="#" class="btn-details">Details</a>
-                </div>
+                {{#each allCryptoOffers}}
+                {{>oneCoinFromCatalog}}
+                {{/each}}
             </div>
 
         </div>
+        {{else}}
 
-        <!-- <div class="no-match">
-                <p>No match was found!</p>
-            </div> -->
+        <div class="no-match">
+            <p>No match was found!</p>
+        </div>
+        {{/if}}
     </section>
 </main>
