@@ -59,6 +59,7 @@ NB: remove all "." in the paths for css ex: src="/static/images/logo.png"
     * navigation: /,/login,/register
 2. Check task and mark all points that are done.
 3. Create model //added in the template
+    * sthModel change collectin name
 4. Add cerate page
     * fill all name=" " fields in create form to be the same as in the model
     * add path href='/sth/create' to navbar in main.hbs

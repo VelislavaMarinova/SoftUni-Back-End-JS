@@ -6,8 +6,16 @@ const bookService = require('../services/bookService');
 const { getErrorMessaage } = require('../utils/errorUtils');
 
 
-router.get('/catalog',(req,res)=>{
-    res.render('book/catalog')
+router.get('/catalog', async(req, res) => {
+    try {
+        const allBookReviews = await bookService.getAll().lean();
+        res.render('book/catalog', { allBookReviews });
+
+    } catch (error) {
+
+        return res.status(400).render('crypto/catalog', { error: getErrorMessaage(error) });
+
+    }
 })
 
 router.get('/create', isAutorized, async (req, res) => {//isAutorized routeguard
