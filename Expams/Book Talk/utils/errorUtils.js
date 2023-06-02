@@ -8,7 +8,7 @@ function getFirstMongooseError(error) {
 exports.getErrorMessaage = (error) => {
     console.log(error.name);
     switch (error.name) {
-        case 'Error':
+        case 'Error': 
             return error.message;
         case 'MongooseError':
             return getFirstMongooseError(error);
