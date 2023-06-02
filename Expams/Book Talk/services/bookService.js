@@ -15,4 +15,6 @@ console.log(inputData,bookReviewId);
     await Book.findByIdAndUpdate(bookReviewId, inputData, { runValidators: true });
 };
 
+exports.delete = (bookReviewId)=>Book.findByIdAndDelete(bookReviewId);
+
 

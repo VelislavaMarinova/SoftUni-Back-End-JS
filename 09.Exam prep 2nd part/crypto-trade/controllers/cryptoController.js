@@ -144,12 +144,12 @@ router.get('/:cryptoOfferId/delete', isAutorized, async (req, res) => {
 router.post('/create', isAutorized, async (req, res) => {//isAutorized routeguard
 
     const cryptoOfferData = req.body;
-    const ownerId = req.user._id;
-    console.log(ownerId);
+    const userId = req.user._id;
+    console.log(userId);
 
     try {
 
-        await cryptoService.create(ownerId, cryptoOfferData);
+        await cryptoService.create(userId, cryptoOfferData);
 
     } catch (error) {
         

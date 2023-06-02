@@ -68,17 +68,21 @@ router.get('/:bookReviewId/edit', isAutorized, async (req, res) => {
         const isOwner = userId == bookReviewData.ownerId;
         console.log(isOwner);
         if (!isOwner) {
-            return
+            // return
             throw new Error('Forbidden page!')
         }
         res.render('book/edit', { bookReviewData });
 
     } catch (error) {
+        console.log(typeof error.message);
+        if (error.message === "Forbidden page!") {
+            return
 
-        return res.status(400).render('home/index', { error: getErrorMessaage(error) });
+        }
+
+        return res.status(400).render('book/edit', { error: getErrorMessaage(error) });
 
     }
-
 
 });
 
@@ -87,24 +91,50 @@ router.post('/:bookReviewId/edit', isAutorized, async (req, res) => {
     const inputData = req.body;
     const userId = req.user._id;
     console.log(userId, bookReviewId, inputData);
-    
+
     try {
-        
+
         const selectedBookReview = await bookService.getOne(bookReviewId);
         const isOwner = userId == selectedBookReview.ownerId;
-        
+
         if (!isOwner) {
             return
-            // throw new Error('Forbidden page!')
+            // throw new Error('Forbidden page!');
         }
         await bookService.edit(bookReviewId, inputData);
     } catch (error) {
-
+        // console.log(error);
         return res.status(400).render('book/edit', { error: getErrorMessaage(error) });
     }
 
     res.redirect(`/book/${bookReviewId}/details`);
 });
+
+router.get('/:bookReviewId/delete', isAutorized, async (req, res) => {
+    const bookReviewId = req.params.bookReviewId;
+    const userId = req.user_id;
+
+    try {
+        const selectedBookReviewData = await bookService.getAll(bookReviewId)
+        const ownerId = selectedBookReviewData.ownerId;
+        const isOwner = userId == ownerId;
+
+        if (!isOwner) {
+            return
+        }
+
+        await bookService.delete(bookReviewId);
+
+    } catch (error) {
+
+        return res.status(400).render('home', { error: getErrorMessaage(error) });
+
+    }
+    res.redirect('/book/catalog');
+
+});
+
+
 
 
 module.exports = router;

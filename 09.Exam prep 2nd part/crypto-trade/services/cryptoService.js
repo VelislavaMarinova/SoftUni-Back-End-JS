@@ -36,11 +36,12 @@ exports.buy = async (userId, cryptoOfferId, res) => {
 
 }
 
-exports.create = (ownerId, cryptoOfferData) => CryptoOffer.create({ ...cryptoOfferData, ownerId: ownerId });
+exports.create = (userId, cryptoOfferData) => CryptoOffer.create({ ...cryptoOfferData, ownerId: userId });
 
 exports.edit = async (cryptoOfferId, cryptoOfferData, userId) => {
     const cryptoOffer = await CryptoOffer.findById(cryptoOfferId);
     const isOwner = cryptoOffer.ownerId == userId;
+    
     if (!isOwner) {
         throw new Error("Forbidden page!");
     }
