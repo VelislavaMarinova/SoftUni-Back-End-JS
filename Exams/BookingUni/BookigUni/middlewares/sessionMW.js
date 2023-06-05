@@ -8,6 +8,7 @@ module.exports = () => (req, res, next) => {
             const userData = veryfyToken(token);
             console.log('Read succesful', userData.username);
             req.user = userData;
+            res.locals.username = userData.username;
         } catch (error) {
             console.log('Invalid token');
             res.clearCookie('token');
