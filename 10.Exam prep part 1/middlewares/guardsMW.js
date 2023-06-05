@@ -1,21 +1,24 @@
-const isUser = (req, res, next) => {
+function isUser() {
+    return (req, res, next) => {
 
-    if (req.user) {
-        next();
-    } else {
-        res.redirect('/auth/login')
-    }
-
+        if (req.user) {
+            next();
+        } else {
+            res.redirect('/auth/login')
+        }
+    };
 };
 
-const isGuest = (req, res, next) => {
+function isGuest() {
 
-    if (req.user) {
-        res.redirect('/')//TODO check assignement for correct redirect 
-    } else {
-        next()
-    }
+    return (req, res, next) => {
 
+        if (req.user) {
+            res.redirect('/')//TODO check assignement for correct redirect 
+        } else {
+            next()
+        }
+    };
 };
 
 module.exports = {

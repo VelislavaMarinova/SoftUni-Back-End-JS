@@ -1,5 +1,6 @@
-const { register,login } = require('../services/userService');
 const authController = require('express').Router();
+const validator = require('validator');
+const { register, login } = require('../services/userService');
 const { parseError } = require('../util/parser')
 
 authController.get('/register', (req, res) => {
@@ -12,15 +13,22 @@ authController.get('/register', (req, res) => {
 authController.post('/register', async (req, res) => {
 
     try {
-        const { username, password, repass } = req.body;
+        const { email, username, password, repass } = req.body;
+        console.log(req.body);
+        if (validator.isEmail(email) == false) {
+            throw new Error('Invalid email!')
+        }
         if (username == '' || password == '') {
             throw new Error('All fields are required!');
+        }
+        if(password.length<5){
+            throw new Error('Password must be at least 5 characters long!')
         }
         if (password !== repass) {
             throw new Error('Passwords don\'t match!')
         }
 
-        const token = await register(username, password);
+        const token = await register(email, username, password);
         //TODO check assignment to see if register creates session
         res.cookie('token', token);
 
@@ -34,6 +42,7 @@ authController.post('/register', async (req, res) => {
             title: 'Register Page',
             errors,
             body: {
+                email: req.body.email,
                 username: req.body.username
             }
         });
@@ -48,8 +57,8 @@ authController.get('/login', (req, res) => {
 });
 authController.post('/login', async (req, res) => {
     try {
-        const { username, password } = req.body;
-        const token = await login(username, password);
+        const { email, password } = req.body;
+        const token = await login(email, password);
 
         res.cookie('token', token);
         //TODO Check redirection to!
@@ -62,14 +71,14 @@ authController.post('/login', async (req, res) => {
             title: 'Login Page',
             errors,
             body: {
-                username: req.body.username
+                email: req.body.email
             }
         })
     }
 
 });
 
-authController.get('/logout',(req,res) =>{
+authController.get('/logout', (req, res) => {
     res.clearCookie('token');
     res.redirect('/');
 })
