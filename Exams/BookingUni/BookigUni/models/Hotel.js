@@ -1,7 +1,7 @@
-const { Schema, model, Types } = require('mongoose');
+const mongoose = require('mongoose');
 
 const URL_PATTERN = /^https?:\/\/.+/i;
-const hotelShema = new Schema({
+const hotelShema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -28,14 +28,12 @@ const hotelShema = new Schema({
         min: [1, 'Rooms must be between 1 and 100'],
         max: [100, 'Rooms must be between 1 and 100']
     },
-    bookings: {
-        type: {
-            type: [Types.ObjectId],
-            ref: 'User',
-        }
-    },
+    bookings: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
+      }],
     owner: {
-        type: Types.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'User',
         required: true,
     }
@@ -48,5 +46,5 @@ hotelShema.index({ name: 1 }, {
     }
 });
 
-const Hotel = model('Hotel', hotelShema);
+const Hotel = mongoose.model('Hotel', hotelShema);
 module.exports = Hotel
