@@ -23,6 +23,8 @@ exports.buy = async (userId, cryptoOfferId, res) => {
 
     // CryptoOffer.findByIdAndUpdate(cryptoOfferId, {$push: {buyers: userId}});
     const cryptoOffer = await CryptoOffer.findById(cryptoOfferId);
+    console.log(cryptoOffer);
+    console.log(cryptoOffer.buyers);
     const isOwner = cryptoOffer.ownerId == userId;
 
     //chek if owner tries to buy-forbidden page
