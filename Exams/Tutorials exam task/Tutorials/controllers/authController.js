@@ -1,18 +1,18 @@
 const authController = require('express').Router();
-const { body, validationResult } = require('express-validator');
+const {body, validationResult} = require('express-validator');
 const { register, login } = require('../services/userService');
-const { parseError } = require('../util/parser')
+const { parseError } = require('../util/parser');
+const {isGuest}=require('../middlewares/guardsMW')
 
-authController.get('/register', (req, res) => {
+authController.get('/register',isGuest(), (req, res) => {
     //TODO replace actual view
     res.render('register', {
         title: 'Register Page'
     });
 });
 
-authController.post('/register',
+authController.post('/register',isGuest(),
     //TODO check requirement for length;
-    // body('email').isEmail().withMessage('Please provide a valid email address'),
     body('username')
         .isLength({ min: 5 }).withMessage('Username must be at least 5 characters long!')
         .isAlphanumeric().withMessage('Username may contain only letters and numbers!'),
@@ -25,7 +25,7 @@ authController.post('/register',
         try {
             const { errors } = validationResult(req);
             if (errors.length > 0) {
-                throw errors
+                throw errors;
             }
             const { username, password, repass } = req.body;
             // replaced by express-validator
@@ -57,13 +57,13 @@ authController.post('/register',
         }
     });
 
-authController.get('/login', (req, res) => {
+authController.get('/login',isGuest(), (req, res) => {
     //TODO replace with actual view
     res.render('login', {
         title: 'Login Page',
     })
 });
-authController.post('/login', async (req, res) => {
+authController.post('/login',isGuest(), async (req, res) => {
     try {
         const { username, password } = req.body;
         const token = await login(username, password);

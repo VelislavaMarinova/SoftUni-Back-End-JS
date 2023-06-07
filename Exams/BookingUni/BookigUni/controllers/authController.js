@@ -2,15 +2,16 @@ const authController = require('express').Router();
 const validator = require('validator');
 const { register, login } = require('../services/userService');
 const { parseError } = require('../util/parser')
+const {isGuest}=require('../middlewares/guardsMW')
 
-authController.get('/register', (req, res) => {
+authController.get('/register',isGuest(), (req, res) => {
     //TODO replace actual view
     res.render('register', {
         title: 'Register Page'
     });
 });
 
-authController.post('/register', async (req, res) => {
+authController.post('/register',isGuest(), async (req, res) => {
 
     try {
         const { email, username, password, repass } = req.body;
@@ -21,7 +22,7 @@ authController.post('/register', async (req, res) => {
         if (username == '' || password == '') {
             throw new Error('All fields are required!');
         }
-        if(password.length<5){
+        if (password.length < 5) {
             throw new Error('Password must be at least 5 characters long!')
         }
         if (password !== repass) {
@@ -49,13 +50,13 @@ authController.post('/register', async (req, res) => {
     }
 });
 
-authController.get('/login', (req, res) => {
+authController.get('/login', isGuest(), (req, res) => {
     //TODO replace with actual view
     res.render('login', {
         title: 'Login Page',
     })
 });
-authController.post('/login', async (req, res) => {
+authController.post('/login',isGuest(), async (req, res) => {
     try {
         const { email, password } = req.body;
         const token = await login(email, password);

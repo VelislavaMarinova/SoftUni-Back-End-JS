@@ -29,14 +29,15 @@ hotelController.get('/create', (req, res) => {
 });
 
 hotelController.post('/create', async (req, res) => {
-
-    const hotel = {
-        name: req.body.name,
-        city: req.body.city,
-        rooms: Number(req.body.rooms),
-        imageUrl: req.body.imageUrl,
-        owner: req.user._id
-    };
+    const hotel = req.body;
+    hotel.owner = req.user._id;
+    // const hotel = {
+    //     name: req.body.name,
+    //     city: req.body.city,
+    //     rooms: Number(req.body.rooms),
+    //     imageUrl: req.body.imageUrl,
+    //     owner: req.user._id
+    // };
 
 
     try {
