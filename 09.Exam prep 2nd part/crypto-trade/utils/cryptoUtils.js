@@ -8,4 +8,4 @@ exports.selectPaymentMethods = (selectedPaymentMethod) => {
     ]
     const result = paymenMethod.map(x => x.value === selectedPaymentMethod ? { ...x, selected: true } : x);
     return result;
-}
+};
