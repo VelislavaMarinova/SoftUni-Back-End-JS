@@ -1,7 +1,9 @@
+const courseController = require('express').Router();
+
+
 const { createCourse, getOneById, deleteById, update, enrollUser } = require('../services/courseService');
 const { parseError } = require('../util/parser');
 
-const courseController = require('express').Router();
 
 courseController.get('/create', (req, res) => {
     res.render('create', {
@@ -123,5 +125,6 @@ courseController.get('/:id/enroll', async (req, res) => {
     }
 
     return res.redirect(`/course/${courseId}`);
-})
+});
+
 module.exports = courseController;
