@@ -5,6 +5,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
+        minLength: [3, 'Username must be at least 3 charachters long!']
     },
     email: {
         type: String,
@@ -31,6 +32,7 @@ userSchema.index({ email: 1 }, {
         strength: 2
     }
 });
+
 const User = model('User', userSchema);
 
 module.exports = User;
