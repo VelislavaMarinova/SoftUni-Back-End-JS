@@ -51,12 +51,12 @@ const gameShema = new Schema({
 
 });
 
-// gameShema.index({ name: 1 }, {
-//     collation: {
-//         locale: 'en',
-//         strength: 2,
-//     }
-// });
+gameShema.index({ name: 1 }, {
+    collation: {
+        locale: 'en',
+        strength: 2,
+    }
+});
 
 const Game = model('Game', gameShema);
 module.exports = Game;

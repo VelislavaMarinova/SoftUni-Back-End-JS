@@ -5,7 +5,7 @@ const User = require('../models/User');
 const JWT_SECRET = 'jahsdiaHSDI8Q979823792DNQJ';
 
 
-async function register(email, username, password) {
+async function register(username, email, password) {
     const existingUsername = await User.findOne({ username }).collation({ locale: 'en', strength: 2 });
     if (existingUsername) {
         throw new Error('Username is taken!');
@@ -27,14 +27,14 @@ async function register(email, username, password) {
     return token;
 }
 
-async function login(email, password) {
-    const user = await User.findOne({ email }).collation({ locale: 'en', strength: 2 });
+async function login(username, password) {
+    const user = await User.findOne({ username }).collation({ locale: 'en', strength: 2 });
     if (!user) {
-        throw new Error('Incorrect email or password!');
+        throw new Error('Incorrect username or password!');
     }
     const hasMatch = await bcrypt.compare(password, user.hashedPassword);
     if (!hasMatch) {
-        throw new Error('Incorrect email or password!');
+        throw new Error('Incorrect username or password!');
 
     }
     const token = createSession(user);
