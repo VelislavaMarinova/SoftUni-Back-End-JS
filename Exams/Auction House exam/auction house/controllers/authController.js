@@ -2,7 +2,7 @@ const authController = require('express').Router();
 const { body, validationResult } = require('express-validator');
 const { register, login } = require('../services/userService');
 const { parseError } = require('../util/parser');
-const { isGuest } = require('../../Exams/Petstagram-exam/Petstagram/middlewares/guardsMW');
+const { isGuest } = require('../middlewares/guardsMW');
 
 authController.get('/register',isGuest(), (req, res) => {
     //TODO replace actual view
@@ -14,12 +14,14 @@ authController.get('/register',isGuest(), (req, res) => {
 authController.post('/register',isGuest(),
     //TODO check requirement for length;
     // body('email').isEmail().withMessage('Please provide a valid email address'),
-    body('username')
-        .isLength({ min: 5 }).withMessage('Username must be at least 5 characters long!')
-        .isAlphanumeric().withMessage('Username may contain only letters and numbers!'),
+    body('email')
+        .isEmail().withMessage('Please provide a valid email address')
+        .matches(/^[A-Za-z\@\.\_]+$/).withMessage('Email can only contain English letters.'),
     body('password')
-        .isLength({ min: 5 }).withMessage('Password must be at least 5 characters long!')
-        .isAlphanumeric().withMessage('Password must be at least 5 characters long!'),
+        .isLength({ min: 5 }).withMessage('Password should be at least 5 characters long!'),
+    body('firstName').isLength({ min: 1 }).withMessage('First name must be at least 1 characters long!'),
+    body('lastName').isLength({ min: 1 }).withMessage('Last name must be at least 1 characters long!'),
+
 
     async (req, res) => {
 
@@ -28,7 +30,7 @@ authController.post('/register',isGuest(),
             if (errors.length > 0) {
                 throw errors
             }
-            const { username, password, repass } = req.body;
+            const { email, firstName, lastName, password, repass } = req.body;
             // replaced by express-validator
             // if (username == '' || password == '') {
             //     throw new Error('All fields are required!');
@@ -38,21 +40,23 @@ authController.post('/register',isGuest(),
                 throw new Error('Passwords don\'t match!')
             }
 
-            const token = await register(username, password);
+            const token = await register(email, firstName, lastName, password);
             //TODO check assignment to see if register creates session
             res.cookie('token', token);
 
             //TODO Check redirection to!
             res.redirect('/');
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             const errors = parseError(error);
             //TODO add error display to actual template
             res.render('register', {
                 title: 'Register Page',
                 errors,
                 body: {
-                    username: req.body.username
+                    email: req.body.email,
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
                 }
             });
         }
@@ -66,8 +70,8 @@ authController.get('/login',isGuest(), (req, res) => {
 });
 authController.post('/login',isGuest(), async (req, res) => {
     try {
-        const { username, password } = req.body;
-        const token = await login(username, password);
+        const { email, password } = req.body;
+        const token = await login(email, password);
 
         res.cookie('token', token);
         //TODO Check redirection to!
@@ -80,9 +84,9 @@ authController.post('/login',isGuest(), async (req, res) => {
             title: 'Login Page',
             errors,
             body: {
-                username: req.body.username
+                email: req.body.email,
             }
-        })
+        });
     }
 
 });

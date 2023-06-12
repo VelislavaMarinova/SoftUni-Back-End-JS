@@ -30,7 +30,7 @@ const cryptoOfferSchema = new mongoose.Schema({
         type: String,
         enum: {
             values: ['crypto-wallet', 'credit-card', 'debit-card', 'paypal'],
-            message: 'Invalid payment ,ethod',
+            message: 'Invalid payment method!',
         },
         required: true,
     },
