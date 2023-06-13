@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 //TODO change dbName
-const CONNECTION_STRING = 'mongodb://localhost:27017/DBname'
+const CONNECTION_STRING = 'mongodb://localhost:27017/theatre'
 
 module.exports = async (app) => {
     try {

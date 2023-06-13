@@ -2,7 +2,7 @@ const authController = require('express').Router();
 const { body, validationResult } = require('express-validator');
 const { register, login } = require('../services/userService');
 const { parseError } = require('../util/parser');
-const { isGuest } = require('../../Exams/Petstagram-exam/Petstagram/middlewares/guardsMW');
+const { isGuest } = require('../middlewares/guardsMW');
 
 authController.get('/register',isGuest(), (req, res) => {
     //TODO replace actual view
@@ -15,11 +15,11 @@ authController.post('/register',isGuest(),
     //TODO check requirement for length;
     // body('email').isEmail().withMessage('Please provide a valid email address'),
     body('username')
-        .isLength({ min: 5 }).withMessage('Username must be at least 5 characters long!')
-        .isAlphanumeric().withMessage('Username may contain only letters and numbers!'),
+        .isLength({ min: 3 }).withMessage('Username must be at least 3 characters long!')
+        .isAlphanumeric().withMessage('Username may contain only english letters and numbers!'),
     body('password')
-        .isLength({ min: 5 }).withMessage('Password must be at least 5 characters long!')
-        .isAlphanumeric().withMessage('Password must be at least 5 characters long!'),
+        .isLength({ min: 3 }).withMessage('Password must be at least 3 characters long!')
+        .isAlphanumeric().withMessage('Password may contain only english letters and numbers!'),
 
     async (req, res) => {
 

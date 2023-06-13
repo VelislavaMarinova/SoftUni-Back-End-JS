@@ -2,7 +2,7 @@ const authController = require('express').Router();
 const { body, validationResult } = require('express-validator');
 const { register, login } = require('../services/userService');
 const { parseError } = require('../util/parser');
-const { isGuest } = require('../../Exams/Petstagram-exam/Petstagram/middlewares/guardsMW');
+const { isGuest } = require('../middlewares/guardsMW');
 
 authController.get('/register',isGuest(), (req, res) => {
     //TODO replace actual view
