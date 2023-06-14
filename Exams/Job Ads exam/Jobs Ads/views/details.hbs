@@ -1,0 +1,62 @@
+<section id="details-page">
+    <article class="details-gage-title">
+        <h1>Details Page</h1>
+    </article>
+    <article class="details-page-card">
+
+        <article class="details-page-card-image">
+            <!-- Do not forget to change the path to the image -->
+            <img src="/static/img/man.png" alt="details-image">
+        </article>
+
+        <article class="details-page-card-content">
+            <p>Author: {{ad.authorEmail}}</p>
+            <h2>Headline: {{ad.headline}}</h2>
+            <h3>Company name: {{ad.companyName}}</h3>
+            <h4>Company description: {{ad.companyDescription}}</h4>
+            <h5>Location: {{ad.location}}</h5>
+
+            <article class="details-page-card-buttons">
+                <!--only for registered users and author of the ad-->
+                {{#if email}}
+                {{#if ad.isOwner}}
+                <a href="/ad/{{ad._id}}/edit" class="btn-edit">Edit</a>
+                <a href="/ad/{{ad._id}}/delete" class="btn-delete">Delete</a>
+                {{else}}
+
+                <!--logged in user who did not apply for current ad-->
+                {{#unless ad.hasApplied}}
+                <a href="/ad/{{ad._id}}/apply" class="btn-apply">Apply now!</a>
+                <p class="applied-people">Hurry up, {{ad.appliesCount}} people have already applied.</p>-->
+
+                <!--logged in user who has already applied for current ad-->
+                {{else}}
+                <p class="already-applied">You have already applied!</p>
+                {{/unless}}
+                {{/if}}
+                {{/if}}
+            </article>
+        </article>
+
+    </article>
+</section>
+
+<!--This section should only be visible to the author of the current ad-->
+{{#if ad.isOwner}}
+{{#if ad.usersAppliedData}}
+<section id="info-about-candidates">
+    <h2>Candidates for this ad:</h2>
+
+    <!--If there are people who have applied, show each of them in the following format-->
+    {{#each ad.usersAppliedData}}
+    <article class="info-about-candidates-card">
+        <h2>Email: {{email}}</h2>
+        <h3>Description of the candidate's skills: {{skills}}</h3>
+    </article>
+    {{/each}}
+
+
+    <!--If not, you don't need to visualize anything further-->
+</section>
+{{/if}}
+{{/if}}
