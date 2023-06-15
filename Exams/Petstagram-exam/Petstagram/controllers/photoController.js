@@ -72,7 +72,7 @@ photoController.post('/create', isUser(), async (req, res) => {
     try {
 
         await createPhoto(photo)
-        res.redirect('/')//to catalog
+        res.redirect('/photo/catalog')//to catalog
     } catch (error) {
         const errors = parseError(error);
         res.render('create', {
