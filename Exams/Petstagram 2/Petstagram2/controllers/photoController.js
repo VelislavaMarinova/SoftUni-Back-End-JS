@@ -134,16 +134,16 @@ photoController.post('/:id/edit', isUser(), async (req, res) => {
     const photoData = await getOneById(photoId);
     const isOwner = photoData.owner._id == userId;
 
-    if (!isOwner) {
-        throw new Error('Only creator can edit photo!')
-        // return res.redirect('/');
-    }
     const editedPhotoData = req.body;
-
+    
     try {
-        if (Object.values(editedPhotoData).some(v => !v)) {
-            throw new Error('All fields are required!');
+        if (!isOwner) {
+            throw new Error('Only creator can edit photo!')
+            // return res.redirect('/');
         }
+        // if (Object.values(editedPhotoData).some(v => !v)) {
+        //     throw new Error('All fields are required!');
+        // }
         const result = await editPhoto(photoId, editedPhotoData);
 
         res.redirect(`/photo/${photoId}`);
