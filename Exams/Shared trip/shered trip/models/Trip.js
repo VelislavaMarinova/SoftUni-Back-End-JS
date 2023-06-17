@@ -1,7 +1,7 @@
 const { Schema, Types, model } = require('mongoose');
 
 const URL_PATTERN = /^https?:\/\/.+/i;
-const tripShema = new Schema({
+const tripSchema = new Schema({
     start: {
         type: String,
         required: [true, 'Start point is required!'],
@@ -63,5 +63,5 @@ const tripShema = new Schema({
 
 });
 
-const Trip = model('Trip', tripShema);
+const Trip = model('Trip', tripSchema);
 module.exports = Trip;

@@ -1,7 +1,7 @@
 const { Schema, Types, model } = require('mongoose');
 
 const URL_PATTERN = /^https?:\/\/.+/i;
-const photoShema = new Schema({
+const photoSchema = new Schema({
     name: {
         type: String,
         required: [true,'Name is required'],
@@ -47,5 +47,5 @@ const photoShema = new Schema({
 
 });
 
-const Photo = model('Photo', photoShema);
+const Photo = model('Photo', photoSchema);
 module.exports = Photo;
