@@ -1,0 +1,19 @@
+const { veryfyToken } = require("../services/userService");
+
+module.exports = () => (req, res, next) => {
+    const token = req.cookies.token;
+    if (token) {
+        try {
+            const userData = veryfyToken(token);
+            console.log('Read succesful', userData.email);
+            req.user = userData;
+            res.locals.user = userData;
+        } catch (error) {
+            console.log('Invalid token');
+            res.clearCookie('token');
+            res.redirect('/auth/login');
+            return;
+        }
+    }
+    next();
+};
